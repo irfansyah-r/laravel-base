@@ -14,6 +14,7 @@
         </style>
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @livewireStyles
     </head>
     <body>
         <div class="font-sans antialiased md:overflow-auto">
@@ -45,6 +46,6 @@
                 </main>
             </div>
         </div>
-
+        @livewireScripts
     </body>
 </html>
