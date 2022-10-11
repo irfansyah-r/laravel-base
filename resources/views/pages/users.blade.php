@@ -6,7 +6,8 @@
                 <p> Users Table</p>
             </div>
             <div class="overflow-auto">
-                <livewire:data-table :model="$className"/>
+                <livewire:data-table :model="$className"
+                    :include="['name', 'email']"/>
             </div>
         </div>
     </div>

@@ -43,17 +43,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function getAllAttributes()
-    {
-        $userSchema = Schema::getColumnListing($this->getTable());
-        $columnType = [];
-        foreach ($userSchema as $column) {
-            $columnType[$column] = Schema::getColumnType($this->getTable(), $column);
-        }
-        $attributes = array(
-            'all'  => $columnType,
-            'fillable' => $this->getFillable(),
-        );
-        return $attributes;
-    }
+    // public function getAllAttributes()
+    // {
+    //     $userSchema = Schema::getColumnListing($this->getTable());
+    //     $columnType = [];
+    //     foreach ($userSchema as $column) {
+    //         $columnType[$column] = Schema::getColumnType($this->getTable(), $column);
+    //     }
+    //     $attributes = array(
+    //         'all'  => $columnType,
+    //         'fillable' => $this->getFillable(),
+    //     );
+    //     return $attributes;
+    // }
 }

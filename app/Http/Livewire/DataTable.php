@@ -9,6 +9,8 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 class DataTable extends DataTableComponent
 {
     public $model;
+    public $include = [];
+    public $exclude = [];
     // protected $model = User::class;
 
     public function configure(): void
@@ -21,13 +23,32 @@ class DataTable extends DataTableComponent
         $model = new $this->model;
         $attributes = $model->getAllAttributes();
         $column = [];
-        foreach ($attributes['fillable'] as $attribute) {
-            if ($attribute !== 'password') {
+        if(empty($this->include)){
+            foreach (array_keys($attributes['all']) as $attribute) {
+                if (!in_array($attribute, $this->exclude)) {
+                    $column[] = Column::make($attribute)
+                        ->sortable()
+                        ->searchable();
+                }
+            }
+        }else{
+            foreach($this->include as $attribute){
                 $column[] = Column::make($attribute)
                     ->sortable()
                     ->searchable();
             }
         }
+        // dd($model->isFK($model->getTable(), "role_id"));
+        // if($class->isFK($class->getTable(), $col)){
+        //     dd(explode('.', $col));
+        //     // $relationClass = ucwords(explode('.', $col))
+        //     // dd($class->getRelations());
+        //     // dd($class->{'role'}());
+        // }else{
+        //     $column[] = Column::make(ucwords($col))
+        //         ->sortable()
+        //         ->searchable();
+        // }
         return $column;
     }
 }

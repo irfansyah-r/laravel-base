@@ -28,7 +28,9 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "exclude-from-classmap": ["vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php"],
+        "files": ["app/Overrides/Model.php"]
     },
     "autoload-dev": {
         "psr-4": {
