@@ -2283,7 +2283,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         $newFields = [];
         foreach($fields as $field => $val){
             $newFields[] = [
-                'name'  => ucwords(implode(" ", explode("_", $field))),
+                'label'  => ucwords(implode(" ", explode("_", $field))),
                 'column'=> $field,
                 'type'  => $val
             ];

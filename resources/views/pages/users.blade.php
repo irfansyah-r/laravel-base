@@ -10,15 +10,37 @@
                     :model="$modelClass"
                     :custom="[
                         [
-                            'name'  => 'E-Mail',
+                            'label' => 'E-Mail',
                             'column'=> 'email'
                         ]
                     ]"
-                    :exclude="['password', 'email_verified_at', 'remember_token']"
+                    :exclude="['password', 'email_verified_at', 'remember_token', 'updated_at']"
                     :include="[
                         [
-                            'name' => 'Role',
-                            'column' => 'role.name'
+                            'label' => 'Role',
+                            'column'=> 'role.name'
+                        ],
+                        [
+                            'label' => 'Search Engine',
+                            'links'  => [
+                                [
+                                    'title' => fn($row) => $row->name.' Google',
+                                    'link'  => fn($row) => 'https://google.com/search?q='.$row->name
+                                ]
+                            ],
+                        ],
+                        [
+                            'label' => 'Social Media',
+                            'links' => [
+                                [
+                                    'title' => 'Facebook',
+                                    'link'  => 'https://facebook.com'
+                                ],
+                                [
+                                    'title' => 'Instagram',
+                                    'link'  => 'https://instagram.com'
+                                ]
+                            ]
                         ]
                     ]"
                 />

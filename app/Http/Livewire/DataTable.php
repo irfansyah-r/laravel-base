@@ -5,6 +5,8 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
+use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
 
 class DataTable extends DataTableComponent
 {
@@ -37,10 +39,10 @@ class DataTable extends DataTableComponent
                     }
                 }else{
                     $customKey = array_search($attribute['column'], array_column($this->custom, 'column'));
-                    $attribute['name'] = $this->custom[$customKey]['name'];
+                    $attribute['label'] = $this->custom[$customKey]['label'];
                     $attribute['column'] = $this->custom[$customKey]['column'];
                 }
-                $column[] = Column::make($attribute['name'], $attribute['column'])
+                $column[] = Column::make($attribute['label'], $attribute['column'])
                     ->sortable()
                     ->searchable();
             }
@@ -48,9 +50,30 @@ class DataTable extends DataTableComponent
 
         if(!empty($this->include)){
             foreach($this->include as $included){
-                $column[] = Column::make($included['name'], $included['column'])
-                    ->sortable()
-                    ->searchable();
+                if(!empty($included['links'])){
+                    $linkColumns = [];
+                    foreach($included['links'] as $link){
+                        // dd($link['title']);
+                        $linkColumns[] = LinkColumn::make(ucwords($included['label']))
+                            ->title(is_string($link['title']) ? fn($row) => $link['title'] : $link['title'])
+                            ->location(is_string($link['link']) ? fn($row) => $link['link'] : $link['link'])
+                            ->attributes(fn($row) => [
+                                'type'  => 'button',
+                                'class' => 'underline text-blue-500 hover:no-underline',
+                                'target'=> '_blank'
+                            ]);
+                    }
+                    $column[] = ButtonGroupColumn::make($included['label'])
+                        ->attributes(function($row) {
+                            return [
+                                'class' => 'space-x-2',
+                            ];
+                        })->buttons($linkColumns);
+                }else{
+                    $column[] = Column::make($included['label'], $included['column'])
+                        ->sortable()
+                        ->searchable();
+                }
             }
         }
         return $column;
