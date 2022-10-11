@@ -15,6 +15,9 @@
         <a href="/users" class="{{ Request::is('users') ? 'font-bold':'' }} flex pl-8 space-x-4 hover:text-black hover:font-bold">
             <span class="my-auto">Users</span>
         </a>
+        <a href="/roles" class="{{ Request::is('roles') ? 'font-bold':'' }} flex pl-8 space-x-4 hover:text-black hover:font-bold">
+            <span class="my-auto">Roles</span>
+        </a>
         <!-- Authentication -->
         <form method="POST" action="{{ route('logout') }}">
             @csrf

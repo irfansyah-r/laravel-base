@@ -33,9 +33,11 @@ class DataTable extends DataTableComponent
             }
         }else{
             foreach($this->include as $attribute){
-                $column[] = Column::make($attribute)
-                    ->sortable()
-                    ->searchable();
+                if(in_array($attribute, array_keys($attributes['all']))){
+                    $column[] = Column::make($attribute)
+                        ->sortable()
+                        ->searchable();
+                }
             }
         }
         // dd($model->isFK($model->getTable(), "role_id"));
