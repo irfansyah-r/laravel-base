@@ -7,7 +7,6 @@
             </div>
             <div class="overflow-auto">
                 <livewire:data-table :model="$modelClass"
-                    :include="['id', 'name', 'created_at', 'updated_at']"
                 />
             </div>
         </div>

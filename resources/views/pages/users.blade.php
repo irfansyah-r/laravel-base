@@ -6,8 +6,22 @@
                 <p> Users Table</p>
             </div>
             <div class="overflow-auto">
-                <livewire:data-table :model="$modelClass"
-                    :include="['name', 'email']"/>
+                <livewire:data-table
+                    :model="$modelClass"
+                    :custom="[
+                        [
+                            'name'  => 'E-Mail',
+                            'column'=> 'email'
+                        ]
+                    ]"
+                    :exclude="['password', 'email_verified_at', 'remember_token']"
+                    :include="[
+                        [
+                            'name' => 'Role',
+                            'column' => 'role.name'
+                        ]
+                    ]"
+                />
             </div>
         </div>
     </div>

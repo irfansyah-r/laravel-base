@@ -9,48 +9,50 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 class DataTable extends DataTableComponent
 {
     public $model;
+    public $custom = [];
     public $include = [];
     public $exclude = [];
     // protected $model = User::class;
 
     public function configure(): void
     {
-        $this->setPrimaryKey('id');
+        $this->setPrimaryKey('id')
+            ->setDebugStatus(true);
     }
 
     public function columns(): array
     {
-        $model = new $this->model;
-        $attributes = $model->getAllAttributes();
+        $model = app($this->model);
         $column = [];
-        if(empty($this->include)){
-            foreach (array_keys($attributes['all']) as $attribute) {
-                if (!in_array($attribute, $this->exclude)) {
-                    $column[] = Column::make($attribute)
-                        ->sortable()
-                        ->searchable();
+        $attributes = $model->getAllAttributes()['all'];
+
+        foreach ($attributes as $attribute) {
+            if (!in_array($attribute['column'], $this->exclude)) {
+                if(!in_array($attribute['column'], array_column($this->custom, 'column')) || str_contains($attribute['column'], '.')){
+                    if($model->isFK($model->getTable(), $attribute['column'])){
+                        continue;
+                        // $fkModel = $model->getForeignModel($model->getTable(), $attribute['column']);
+                        // $attribute['name'] = $fkModel[0];
+                        // $attribute['column'] = strtolower($fkModel[0]).'.name';
+                    }
+                }else{
+                    $customKey = array_search($attribute['column'], array_column($this->custom, 'column'));
+                    $attribute['name'] = $this->custom[$customKey]['name'];
+                    $attribute['column'] = $this->custom[$customKey]['column'];
                 }
-            }
-        }else{
-            foreach($this->include as $attribute){
-                if(in_array($attribute, array_keys($attributes['all']))){
-                    $column[] = Column::make($attribute)
-                        ->sortable()
-                        ->searchable();
-                }
+                $column[] = Column::make($attribute['name'], $attribute['column'])
+                    ->sortable()
+                    ->searchable();
             }
         }
-        // dd($model->isFK($model->getTable(), "role_id"));
-        // if($class->isFK($class->getTable(), $col)){
-        //     dd(explode('.', $col));
-        //     // $relationClass = ucwords(explode('.', $col))
-        //     // dd($class->getRelations());
-        //     // dd($class->{'role'}());
-        // }else{
-        //     $column[] = Column::make(ucwords($col))
-        //         ->sortable()
-        //         ->searchable();
-        // }
+
+        if(!empty($this->include)){
+            foreach($this->include as $included){
+                $column[] = Column::make($included['name'], $included['column'])
+                    ->sortable()
+                    ->searchable();
+            }
+        }
         return $column;
     }
 }

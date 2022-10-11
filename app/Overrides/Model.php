@@ -2236,7 +2236,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
             $columnType[$column] = Schema::getColumnType($this->getTable(), $column);
         }
         $attributes = array(
-            'all'  => $columnType,
+            'all'  => $this->formatColumn($columnType),
             'fillable' => $this->getFillable(),
         );
         return $attributes;
@@ -2248,18 +2248,46 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
             ->getDoctrineSchemaManager()
             ->listTableForeignKeys($table);
 
+        // dd(get_class($this->role()->getRelated()));
+
         return collect($fkColumns)->map(function ($fkColumn) {
             return $fkColumn->getColumns();
         })->flatten()->contains($column);
     }
 
-    function getForeginTable(string $table, string $column)
+    function getForeignModel(string $table, string $column)
     {
         $fkColumns = Schema::getConnection()
             ->getDoctrineSchemaManager()
             ->listTableForeignKeys($table);
-        return collect($fkColumns)->filter(function ($fkColumn) use ($column) {
-            return strpos($fkColumn->getColumns()[0], $column) === false;
-        })[0]->getForeignTableName();
+
+        $foreignConstrant = collect($fkColumns)->filter(function ($fkColumn) use ($column) {
+            return ($fkColumn->getColumns()[0] === $column);
+        })[0];
+
+        $model = $this->getAllModel();
+        return collect($model)->filter(function ($model) use ($foreignConstrant){
+            $model = app("App\Models\\".$model);
+            return $model->getTable() === $foreignConstrant->getForeignTableName();
+        })->toArray();
+    }
+
+    function getAllModel()
+    {
+        $path = app_path('Models') . '/*.php';
+        return collect(glob($path))->map(fn ($file) => basename($file, '.php'))->toArray();
+    }
+
+    function formatColumn($fields)
+    {
+        $newFields = [];
+        foreach($fields as $field => $val){
+            $newFields[] = [
+                'name'  => ucwords(implode(" ", explode("_", $field))),
+                'column'=> $field,
+                'type'  => $val
+            ];
+        }
+        return $newFields;
     }
 }
