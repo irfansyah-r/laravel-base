@@ -97,24 +97,19 @@ class DataTable extends DataTableComponent
 
     function addLink($included){
         $linkColumns = [];
-        foreach($included['links'] as $link){
+        foreach($included['links'] as $link){;
             $class = '';
-            if(!empty($link['type'])){
-                if($link['type'] === 'link'){
-                    $class = 'underline text-blue-500 hover:no-underline';
-                }elseif($link['type'] === 'button'){
-                    $class = 'bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1';
-                }else{
-                    $class = 'cursor-default';
-                }
-            }
+            if(!empty($link['class'])){ $class = $link['class'];
+            }elseif(!empty($link['type']) && $link['type'] === 'link'){ $class = 'underline text-blue-500 hover:no-underline';
+            }elseif(!empty($link['type']) && $link['type'] === 'button'){ $class = 'bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1'; }
+
             $linkColumns[] = LinkColumn::make(ucwords($included['label']))
                 ->title(is_string($link['title']) ? fn($row) => $link['title'] : $link['title'])
                 ->location(empty($link['link']) ? fn($row) => '' : (is_string($link['link']) ? fn($row) => $link['link'] : $link['link']))
                 ->attributes(fn($row) => [
-                    'class' => !empty($link['class']) ? $link['class'] : $class,
-                    'onclick' => 'return false',
-                    'target'=> '_blank'
+                    'class'     => $class,
+                    'target'    => '_blank',
+                    'onclick'   => !empty($link['onclick']) ? $link['onclick'] : ''
                 ]);
         }
         return ButtonGroupColumn::make($included['label'])

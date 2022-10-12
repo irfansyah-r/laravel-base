@@ -51,8 +51,17 @@
                             'label' => 'Email Provider',
                             'links' => [
                                 [
-                                    'title' => 'Google',
-                                    'type'  => 'unclickable',
+                                    'title' => function($row){
+                                        if(str_contains($row->email, 'gmail')){
+                                            return 'Google';
+                                        }elseif(str_contains($row->email, 'yahoo')){
+                                            return 'Yahoo';
+                                        }else{
+                                            return 'Unidentified';
+                                        }
+                                    },
+                                    'class' => 'cursor-pointer',
+                                    'onclick'  => 'return false',
                                 ]
                             ]
                         ]
