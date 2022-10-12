@@ -12,20 +12,23 @@
                         [
                             'label' => 'E-Mail',
                             'column'=> 'email'
-                        ]
+                        ],
                     ]"
                     :exclude="['password', 'email_verified_at', 'remember_token', 'updated_at']"
                     :include="[
                         [
                             'label' => 'Role',
-                            'column'=> 'role.name'
+                            'column'=> 'role.name',
+                            'format'=> fn($value, $row) => '<strong>'.ucwords($value).'</strong>',
+                            'formatType' => 'html'
                         ],
                         [
                             'label' => 'Search Engine',
-                            'links'  => [
+                            'links' => [
                                 [
                                     'title' => fn($row) => $row->name.' Google',
-                                    'link'  => fn($row) => 'https://google.com/search?q='.$row->name
+                                    'link'  => fn($row) => 'https://google.com/search?q='.$row->name,
+                                    'type'  => 'button',
                                 ]
                             ],
                         ],
@@ -34,11 +37,22 @@
                             'links' => [
                                 [
                                     'title' => 'Facebook',
-                                    'link'  => 'https://facebook.com'
+                                    'link'  => 'https://facebook.com',
+                                    'type'  => 'link'
                                 ],
                                 [
                                     'title' => 'Instagram',
-                                    'link'  => 'https://instagram.com'
+                                    'link'  => 'https://instagram.com',
+                                    'type'  => 'link'
+                                ]
+                            ]
+                        ],
+                        [
+                            'label' => 'Email Provider',
+                            'links' => [
+                                [
+                                    'title' => 'Google',
+                                    'type'  => 'unclickable',
                                 ]
                             ]
                         ]
