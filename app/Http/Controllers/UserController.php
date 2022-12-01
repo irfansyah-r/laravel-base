@@ -14,6 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        // dd(User::class);
         return view('pages.users', ['modelClass' => User::class]);
     }
 

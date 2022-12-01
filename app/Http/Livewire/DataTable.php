@@ -20,8 +20,28 @@ class DataTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setDebugStatus(true);
+            ->setDebugStatus(false);
     }
+
+    // public function mount($include)
+    // {
+    //     $this->include = $include;
+    // }
+
+    // public function hydrateInclude($value)
+    // {
+    //     $this->include = $value;
+    // }
+
+    // public function hydrateInclude()
+    // {
+    //     dd($include);
+    // }
+
+    // public function booted(): void
+    // {
+    //     $this->include = $this->include;
+    // }
 
     public function columns(): array
     {
@@ -59,6 +79,7 @@ class DataTable extends DataTableComponent
         }
 
         if(!empty($this->include)){
+            // dd($this->include);
             foreach($this->include as $included){
                 if(!empty($included['type']) || !empty($included['links'])){
                     if(!empty($included['links'])){
@@ -83,6 +104,8 @@ class DataTable extends DataTableComponent
     }
 
     function formatColumn($attribute, $custom){
+        // dd(fn($value, $row) => $attribute['format']);
+        // $attribute['format'] = fn($value, $row) => $attribute['format'];
         $formatted = $custom->format(is_string($attribute['format']) ? (fn($value, $row, Column $column) => $attribute['format']) : $attribute['format']);
         if(!empty($attribute['formatType']) && $attribute['formatType'] === 'html'){
             return $formatted->html();
@@ -97,7 +120,8 @@ class DataTable extends DataTableComponent
 
     function addLink($included){
         $linkColumns = [];
-        foreach($included['links'] as $link){;
+        // dd($included);
+        foreach($included['links'] as $link){
             $class = '';
             if(!empty($link['class'])){ $class = $link['class'];
             }elseif(!empty($link['type']) && $link['type'] === 'link'){ $class = 'underline text-blue-500 hover:no-underline';
