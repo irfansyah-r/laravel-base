@@ -24,6 +24,8 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        Artisan::call('db:seed', array('--class' => 'AdminUserSeeder'));
     }
 
     /**
