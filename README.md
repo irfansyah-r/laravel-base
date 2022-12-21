@@ -8,9 +8,9 @@ Laravel Base sebagai starter kit dalam penggunaan framework laravel sebagai pemb
 * Pembuatan Table yang dinamis
 * Pembuatan Form yang dinamis
 
-![alt text](https://github.com/irfansyah-r/laravel-base/blob/main/preview/Login%20Page.png?raw=true)
+![Login Page](https://github.com/irfansyah-r/laravel-base/blob/main/preview/Login%20Page.png?raw=true)
 
-![alt text](https://github.com/irfansyah-r/laravel-base/blob/main/preview/Users%20Page.png?raw=true)
+![Users Page](https://github.com/irfansyah-r/laravel-base/blob/main/preview/Users%20Page.png?raw=true)
 
 ## Getting Started
 
